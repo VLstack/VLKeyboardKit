@@ -8,6 +8,12 @@ public extension View
  {
   self.modifier(VLKeyboard.Modifier(type))
  }
+ 
+ func keyboard(delegate: UITextFieldDelegate? = nil,
+               @ViewBuilder view: @escaping ((UITextDocumentProxy, VLKeyboard.FeedbackHandler?, UITextFieldDelegate?) -> some View)) -> some View
+ {
+  self.keyboard(VLKeyboard.Factory(delegate, view))
+ }
 }
 
 extension VLKeyboard
