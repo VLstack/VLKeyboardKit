@@ -1,109 +1,98 @@
 import UIKit
 import SwiftUI
 
-public struct VLKeyboardFinderView<ViewType: UIView>: UIViewRepresentable
+extension View
 {
-//    let selector: (UIView) -> ViewType?
-    let customize: (ViewType) -> Void
-    
-    public init(
-//        selector: @escaping (UIView) -> ViewType?,
-        customize: @escaping (ViewType) -> Void
-    ) {
-//        self.selector = selector
-        self.customize = customize
-    }
-    
-    public func makeUIView(context: UIViewRepresentableContext<VLKeyboardFinderView>) -> UIView {
-        let view = UIView(frame: .zero)
-        view.accessibilityLabel = "IntrospectionUIView<\(ViewType.self)>"
-        return view
-    }
-
-    public func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<VLKeyboardFinderView>) {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            guard let targetView = self.selector(uiView) else {
-                return
-            }
-            self.customize(targetView)
-        }
-    }
- 
- // TODO: rename to "getTarget"
- // TODO: should return UITextField?
- private func selector(_ view: UIView) -> ViewType?
+ public func getTextField(_ customize: @escaping (UITextField) -> ()) -> some View
  {
-  guard let viewHost = findViewHost(from: view)
-  else { return nil }
-
-  return firstSibling(containing: UITextField.self, from: viewHost) as? ViewType
- }
- 
- private func findViewHost(from entry: UIView) -> UIView?
- {
-  var superview = entry.superview
-  while let s = superview
-  {
-   if NSStringFromClass(type(of: s)).contains("ViewHost") { return s }
-   superview = s.superview
-  }
-  
-  return nil
- }
- 
- private func firstSibling<AnyViewType: UIView>(containing type: AnyViewType.Type,
-                                                from entry: UIView) -> AnyViewType?
- {
-  guard let superview = entry.superview,
-      let entryIndex = superview.subviews.firstIndex(of: entry)
-  else { return nil }
-        
-  for subview in superview.subviews[entryIndex..<superview.subviews.endIndex]
-  {
-   if let typed = findChild(ofType: type, in: subview)
-   {
-    return typed
-   }
-  }
-        
-  return nil
- }
-
- private func findChild<AnyViewType: UIView>(ofType type: AnyViewType.Type,
-                                             in root: UIView) -> AnyViewType?
- {
-  for subview in root.subviews
-  {
-   if let typed = subview as? AnyViewType
-   {
-    return typed
-   }
-   
-   if let typed = findChild(ofType: type, in: subview)
-   {
-    return typed
-   }
-  }
-  
-  return nil
+  self.background(VLKeyboard.FindTextField(customize))
  }
 }
 
-extension View
+extension VLKeyboard
 {
- @ViewBuilder
- public func findTextField(customize: @escaping (UITextField) -> ()) -> some View
+ fileprivate struct FindTextField: UIViewRepresentable
  {
-         return self.background(VLKeyboardFinderView(
-//             selector: { introspectionView in
-//                 guard let viewHost = INTROSPECT.findViewHost(from: introspectionView) else {
-//                     return nil
-//                 }
-//                 return INTROSPECT.firstSibling(containing: UITextField.self, from: viewHost)
-//             },
-             customize: customize
-         ))
-     }
- 
- 
+  let customize: (UITextField) -> Void
+  
+  public init(_ customize: @escaping (UITextField) -> Void)
+  {
+   self.customize = customize
+  }
+  
+  public func makeUIView(context: UIViewRepresentableContext<FindTextField>) -> UIView
+  {
+   UIView(frame: .zero)
+  }
+  
+  public func updateUIView(_ uiView: UIView,
+                           context: UIViewRepresentableContext<FindTextField>)
+  {
+   DispatchQueue.main.asyncAfter(deadline: .now())
+   {
+    guard let textfield: UITextField = self.getTarget(uiView)
+    else { return }
+    self.customize(textfield)
+   }
+  }
+  
+  private func getTarget(_ view: UIView) -> UITextField?
+  {
+   guard let viewHost: UIView = getViewHost(view)
+   else { return nil }
+   
+   return firstSibling(viewHost)
+  }
+  
+  private func getViewHost(_ viewHost: UIView) -> UIView?
+  {
+   var superview = viewHost.superview
+   while let s = superview
+   {
+    if NSStringFromClass(type(of: s)).contains("ViewHost")
+    {
+     return s
+    }
+    
+    superview = s.superview
+   }
+   
+   return nil
+  }
+  
+  private func firstSibling(_ viewHost: UIView) -> UITextField?
+  {
+   guard let superview = viewHost.superview,
+         let index = superview.subviews.firstIndex(of: viewHost)
+   else { return nil }
+   
+   for subview in superview.subviews[index..<superview.subviews.endIndex]
+   {
+    if let typed = findChild(subview)
+    {
+     return typed
+    }
+   }
+   
+   return nil
+  }
+  
+  private func findChild(_ root: UIView) -> UITextField?
+  {
+   for subview in root.subviews
+   {
+    if let typed: UITextField = subview as? UITextField
+    {
+     return typed
+    }
+    
+    if let typed: UITextField = findChild(subview)
+    {
+     return typed
+    }
+   }
+   
+   return nil
+  }
+ }
 }

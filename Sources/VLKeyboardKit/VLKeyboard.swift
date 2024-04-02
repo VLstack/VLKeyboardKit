@@ -1,16 +1,23 @@
-import Foundation
 import UIKit
-import SwiftUI
+import Observation
 
-public class VLKeyboard: UIInputViewController, ObservableObject
+@Observable
+public class VLKeyboard: UIInputViewController
 {
- public typealias SystemFeedbackHandler = () -> ()
+ public typealias FeedbackHandler = () -> ()
  
- public private(set) lazy var keyboardInputView = VLKeyboardInputView(keyboardUIView: keyboardView)
+ public var delegate: UITextFieldDelegate? = nil
+
+ @ObservationIgnored
+ public private(set) lazy var keyboardInputView = VLKeyboard.InputView(keyboardView)
  
+ @ObservationIgnored
  internal var keyboardView: UIView! = nil
- internal var playSystemFeedback: SystemFeedbackHandler? = UIDevice.current.playInputClick
+
+ @ObservationIgnored
+ internal var feedback: FeedbackHandler? = UIDevice.current.playInputClick
  
+ @ObservationIgnored
  override public var view: UIView!
  {
   get { keyboardInputView }
