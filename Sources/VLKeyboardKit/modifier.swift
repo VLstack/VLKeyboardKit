@@ -4,11 +4,24 @@ import SwiftUI
 
 public extension View
 {
+ /// Attaches a custom keyboard to the view
+ ///
+ /// - Parameters:
+ ///   - type: The instance of `VLKeyboard` to be used as the custom keyboard
+ ///
+ /// - Returns: A modified view with the custom keyboard attached
  func keyboard(_ type: VLKeyboard) -> some View
  {
   self.modifier(VLKeyboard.Modifier(type))
  }
  
+ /// Attaches a custom keyboard to the view with additional configuration options
+ ///
+ /// - Parameters:
+ ///   - delegate: The delegate for text field interactions.
+ ///   - view: A closure that returns a SwiftUI view representing the custom keyboard
+ ///
+ /// - Returns: A modified view with the custom keyboard attached.
  func keyboard(delegate: UITextFieldDelegate? = nil,
                @ViewBuilder view: @escaping ((UITextDocumentProxy, VLKeyboard.FeedbackHandler?, UITextFieldDelegate?) -> some View)) -> some View
  {
@@ -18,10 +31,17 @@ public extension View
 
 extension VLKeyboard
 {
+ /// Internal modifier for integrating the `VLKeyboard` with SwiftUI views.
+ ///
+ /// - Note: This modifier is used internally and should not be accessed directly.
  fileprivate struct Modifier: ViewModifier
  {
   @State var type: VLKeyboard
   
+  /// Initializes the modifier with the specified instance of `VLKeyboard`
+  ///
+  /// - Parameters:
+  ///   - type: The instance of `VLKeyboard`.
   internal init(_ type: VLKeyboard)
   {
    self._type = State(wrappedValue: type)

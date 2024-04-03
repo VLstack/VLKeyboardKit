@@ -2,12 +2,19 @@ import UIKit
 
 extension VLKeyboard
 {
+ /// Serves as the input view for the custom keyboard provided by `VLKeyboard`.
  public class InputView: UIView, UIInputViewAudioFeedback
  {
+  /// Underlying UIView used as the input view
   private var uiView: UIView
   
+  /// Indicates whether the input view plays input clicks
   public var enableInputClicksWhenVisible: Bool { true }
   
+  /// Initializes the input view with the specified view
+  /// 
+  /// - Parameters:
+  ///   - view: The view to be used as the input view
   init(_ view: UIView)
   {
    self.uiView = view
@@ -27,8 +34,10 @@ extension VLKeyboard
    backgroundColor = .clear
   }
   
+  /// :nodoc:
   required init?(coder: NSCoder) { fatalError("VLKeyboard.InputView.init(coder:) not implemented") }
-  
+
+  /// :nodoc:
   public override var intrinsicContentSize: CGSize { uiView.intrinsicContentSize }
  }
 }
