@@ -13,19 +13,15 @@ public class VLKeyboard: UIInputViewController
  public var delegate: UITextFieldDelegate? = nil
 
  /// The custom keyboard input view.
- @ObservationIgnored
  public private(set) lazy var keyboardInputView = VLKeyboard.InputView(keyboardView)
  
  /// The underlying keyboard view.
- @ObservationIgnored
  internal var keyboardView: UIView! = nil
 
  /// The feedback closure for input events.
- @ObservationIgnored
  internal var feedback: FeedbackHandler? = UIDevice.current.playInputClick
  
  /// Overrides the default view property with the custom keyboard input view.
- @ObservationIgnored
  override public var view: UIView!
  {
   get { keyboardInputView }
