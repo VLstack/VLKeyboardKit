@@ -5,7 +5,7 @@ import Observation
  `VLKeyboard` is a SwiftUI custom keyboard input view controller that extends `UIInputViewController`.
  It provides functionality for managing a custom keyboard input view to use with TextField.
 */
-@Observable
+//@Observable
 public class VLKeyboard: UIInputViewController
 {
  /// A closure type for handling feedback events.
