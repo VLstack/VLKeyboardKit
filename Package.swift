@@ -3,24 +3,17 @@
 
 import PackageDescription
 
-let package = Package(
-    name: "VLKeyboardKit",
-    platforms: [
-            .iOS(.v17)
-        ],
-    products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "VLKeyboardKit",
-            targets: ["VLKeyboardKit"]),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "VLKeyboardKit"),
-        .testTarget(
-            name: "VLKeyboardKitTests",
-            dependencies: ["VLKeyboardKit"]),
-    ]
+let package = Package(name: "VLKeyboardKit",
+                      platforms: [ .iOS(.v17) ],
+                      products:
+                      [
+                       .library(name: "VLKeyboardKit",
+                                targets: ["VLKeyboardKit"])
+                      ],
+                      targets:
+                      [
+                       .target(name: "VLKeyboardKit"),
+                       .testTarget(name: "VLKeyboardKitTests",
+                                   dependencies: ["VLKeyboardKit"])
+                      ]
 )
