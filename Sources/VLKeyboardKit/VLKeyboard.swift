@@ -24,6 +24,7 @@ public class VLKeyboard: UIInputViewController
  @ObservationIgnored
  internal var feedback: FeedbackHandler? = UIDevice.current.playInputClick
  
+ /// Overrides the default view property with the custom keyboard input view.
  @ObservationIgnored
  override public var view: UIView!
  {
