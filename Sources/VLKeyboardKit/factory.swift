@@ -9,8 +9,8 @@ extension VLKeyboard
   /// - Parameters:
   ///   - delegate: The delegate for text field interactions
   ///   - keyboardInputView: A closure that returns a SwiftUI view representing the custom keyboard
-  public init(_ delegate: UITextFieldDelegate? = nil,
-              @ViewBuilder _ keyboardInputView: @escaping ((UITextDocumentProxy, FeedbackHandler?, UITextFieldDelegate?) -> some View))
+  public init(_ delegate: (any UITextFieldDelegate)? = nil,
+              @ViewBuilder _ keyboardInputView: @escaping ((any UITextDocumentProxy, FeedbackHandler?, (any UITextFieldDelegate)?) -> some View))
   {
    super.init(nibName: nil, bundle: nil)
    let rootView = keyboardInputView(self.textDocumentProxy,

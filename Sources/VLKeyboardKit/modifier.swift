@@ -20,8 +20,8 @@ public extension View
  ///   - view: A closure that returns a SwiftUI view representing the custom keyboard
  ///
  /// - Returns: A modified view with the custom keyboard attached.
- func keyboard(delegate: UITextFieldDelegate? = nil,
-               @ViewBuilder view: @escaping ((UITextDocumentProxy, VLKeyboard.FeedbackHandler?, UITextFieldDelegate?) -> some View)) -> some View
+ @MainActor func keyboard(delegate: (any UITextFieldDelegate)? = nil,
+                          @ViewBuilder view: @escaping ((any UITextDocumentProxy, VLKeyboard.FeedbackHandler?, (any UITextFieldDelegate)?) -> some View)) -> some View
  {
   self.keyboard(VLKeyboard.Factory(delegate, view))
  }

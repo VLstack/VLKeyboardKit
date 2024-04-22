@@ -9,7 +9,7 @@ public class VLKeyboard: UIInputViewController
  public typealias FeedbackHandler = () -> ()
  
  /// Delegate for text field interactions
- public var delegate: UITextFieldDelegate? = nil
+ public var delegate: (any UITextFieldDelegate)? = nil
 
  /// Custom keyboard input view
  public private(set) lazy var keyboardInputView = VLKeyboard.InputView(keyboardView)

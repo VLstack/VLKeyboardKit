@@ -65,7 +65,7 @@ extension VLKeyboard
   ///   - view: The root view from which to start searching
   ///
   /// - Returns: The target `UITextField`, if found; otherwise, `nil`
-  private func getTarget(_ view: UIView) -> UITextField?
+  @MainActor private func getTarget(_ view: UIView) -> UITextField?
   {
    guard let viewHost: UIView = getViewHost(view)
    else { return nil }
@@ -79,7 +79,7 @@ extension VLKeyboard
   ///   - viewHost: The root view to search for the hosting `UIView`
   ///
   /// - Returns: The hosting `UIView`, if found; otherwise, `nil`
-  private func getViewHost(_ viewHost: UIView) -> UIView?
+  @MainActor private func getViewHost(_ viewHost: UIView) -> UIView?
   {
    var superview = viewHost.superview
    while let s = superview
@@ -101,7 +101,7 @@ extension VLKeyboard
   ///   - viewHost: The root view from which to start searching
   ///
   /// - Returns: The first sibling `UITextField`, if found; otherwise, `nil`
-  private func firstSibling(_ viewHost: UIView) -> UITextField?
+  @MainActor private func firstSibling(_ viewHost: UIView) -> UITextField?
   {
    guard let superview = viewHost.superview,
          let index = superview.subviews.firstIndex(of: viewHost)
@@ -124,7 +124,7 @@ extension VLKeyboard
   ///   - root: The root view from which to start searching
   ///   
   /// - Returns: The first found `UITextField`, if any; otherwise, `nil`
-  private func findChild(_ root: UIView) -> UITextField?
+  @MainActor private func findChild(_ root: UIView) -> UITextField?
   {
    for subview in root.subviews
    {
